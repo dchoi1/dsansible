@@ -1,0 +1,16 @@
+---
+- name: user add
+  hosts: dstest
+  tasks:
+   - name: adding ansible user
+     yum:
+      name: httpd
+      state: present
+     notify: reboot_host
+
+  handlers:
+   - name: reboot_host
+     command: /sbin/shutdown -r +1
+     async: 1
+     poll: 0
+     ignore_errors: true

@@ -1,0 +1,4 @@
+---
+# vars file for motd
+vars:
+ system_ower: role@wudip.com

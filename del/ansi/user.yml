@@ -1,0 +1,8 @@
+- name: create a user
+  hosts: dstest
+  tasks:
+   - name: create dchoi
+     user:
+      name: dchoi
+      comment: DS
+      shell: /bin/bash

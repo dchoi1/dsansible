@@ -1,0 +1,17 @@
+---
+- name: testing vhost role
+  hosts: dstest
+  remote_user: ansible
+  become: yes
+  pre_tasks: 
+   - name: pre_tasks
+     debug: 
+      msg: "This is pre-tasks"
+  roles: 
+   - myvhost
+
+  post_tasks:
+   - name: pre_tasks
+     debug:
+      msg: "This is post-tasks"
+

@@ -1,0 +1,5 @@
+This system's hostname is {{ ansible_facts['hostname'] }}
+Today's date is {{ ansible_facts['date_time']['date'] }}
+This system has {{ ansible_facts['memtotal_mb'] }}
+
+Please contact {{ system_owner }}

@@ -1,0 +1,28 @@
+---
+- name: creating a user
+  hosts: dstest
+  remote_user: root
+  tasks:
+   - name: creating ansible user
+     user:
+      name: ansible
+      password: "$6$saltsalt$jlJbI0aytmfZ6i0yQxXkaBJRXYXGWmdQbkenWnh2s071B9ga.0.gefgn4ouOe.5WBYAOxqnbd.bOOu1IbuCLp/"
+      uid: 4001
+      comment: "ansible user"
+      state: present
+
+   - name: Ensure key is in root .ssh directory
+     authorized_key:
+      user: ansible
+      state: present
+      key: '{{ item }}'
+     with_file:
+      - ~/.ssh/id_rsa.pub
+
+   - name: adding ansible  user to sudoers file
+     lineinfile:
+      path: /etc/sudoers
+#      regexp: '^ansible        ALL=(ALL)       NOPASSWD: ALL'
+      regexp: '^ansible'
+      state: present
+      line: 'ansible        ALL=(ALL)       NOPASSWD: ALL'

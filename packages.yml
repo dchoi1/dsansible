@@ -1,0 +1,11 @@
+---
+ - name: install package
+   hosts: dstest
+   tasks:
+    - name: install libselinux-python
+      yum:
+       name: "{{ packages }}"
+       state: latest
+      vars: 
+       packages: 
+        - libselinux-python

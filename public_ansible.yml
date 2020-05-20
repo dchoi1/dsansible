@@ -1,0 +1,11 @@
+---
+- name: Public key is deployed to managed hosts for ansible user
+  hosts: dstest
+  tasks: 
+   - name: Ensure key exists authorized_hosts 
+     authorized_key: 
+      user: ansible
+      state: present
+      key: '{{ item }}'
+     with_file: 
+      - ~/.ssh/id_rsa.pub

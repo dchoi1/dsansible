@@ -1,0 +1,7 @@
+---
+- name: reboot system
+  hosts: dstest
+  tasks:
+   - name: reboot system
+     reboot: 
+      test_command: uptime

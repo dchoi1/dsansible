@@ -1,0 +1,67 @@
+- hosts: nodes
+  tasks:
+  - name: Put SELinux in permissive mode, logging actions that would be blocked.
+    selinux:
+      policy: targeted
+      state: enforcing
+  - name: disable non-required services
+    service:
+      name: firewalld
+      state: stopped
+      enabled: no
+  - name: Disable root Login
+    replace:
+      path: /etc/ssh/sshd_config
+      regexp: '#PermitRootLogin yes'
+      replace: 'PermitRootLogin no'
+      backup: yes
+    notify: "reload ssh"
+  - name: ensure a list of packages installed
+    yum:
+      name: "{{ packages }}"
+    vars:
+      packages:
+      - yum-utils
+      - wget
+      - telnet
+      - screen
+      - vim
+      - bash-completion
+      - kexec-tools
+      - sos
+      - psacct
+      - bridge-utils
+      - net-tools
+      - atomic
+      - pyOpenSSL
+      - python2-cryptography
+      - docker
+      - iptraf
+      - tcpdump
+      - glusterfs-fuse
+  - name: enable required services
+    service:
+      name: docker
+      state: started
+      enabled: yes
+  - name: install all updates using yum
+    yum:
+      name: '*'
+      state: latest
+  - name: reboot if required
+    shell: needs-restarting -r
+    failed_when: false
+    register: reboot_required
+    changed_when: reboot_required.rc == 1
+    notify: reboot_host
+# Handlers to complete if values are true
+  handlers:
+    - name: reload ssh
+      service:
+        name: sshd
+        state: reloaded
+    - name: reboot_host
+      command: /sbin/shutdown -r +1
+      async: 1
+      poll: 0
+      ignore_errors: true

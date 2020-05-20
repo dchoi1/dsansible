@@ -1,0 +1,51 @@
+---
+- name: creating a user
+  hosts: dstest
+  tasks:
+   - name: install libselinux-python
+     yum:
+      name: "{{ packages }}"
+      state: latest
+     vars:
+      packages:
+       - libselinux-python
+
+   - name: creating ansible user
+     user: 
+      name: ansible
+      uid: 3001
+   - name: setup resolv.conf
+     lineinfile: 
+      path: /etc/resolv.conf 
+      regexp: '^nameserver 10.44.32.12'
+      line: 'nameserver 10.44.32.12'
+   - name: disable selinux
+     selinux: 
+      state: disabled
+   - name: setting up sudoers
+     lineinfile: 
+      path: /etc/sudoers 
+      state: present
+      regexp: '^ansible'
+      line: 'ansible ALL=(ALL) NOPASSWD: ALL'
+      validate: /usr/sbin/visudo -cf %s
+
+   - name: adding hostname in etc hosts
+     lineinfile:
+      path: /etc/hosts
+      line: '{{ ansible_default_ipv4.address }} {{ ansible_hostname }}'
+      regexp: '^{{ ansible_default_ipv4.address }}'
+      state: present
+
+   - name: adding history to default
+     lineinfile:
+      path: /etc/skel/.bashrc
+      line: "export HISTTIMEFORMAT='%F %T '"
+      regexp: "^export HISTTIMEFORMAT"
+      state: present
+   - name: adding history to root
+     lineinfile:
+      path: /root/.bashrc
+      line: "export HISTTIMEFORMAT='%F %T '"
+      regexp: "^export HISTTIMEFORMAT"
+      state: present

@@ -1,0 +1,13 @@
+---
+- name: adding a user to /etc/sudoers
+  hosts: dstest
+  tasks: 
+   - name: adding ansible  user to sudoers file
+     lineinfile: 
+      path: /etc/sudoers
+#      regexp: '^ansible        ALL=(ALL)       NOPASSWD: ALL'
+      regexp: '^ansible'
+      state: present
+      line: 'ansible        ALL=(ALL)       NOPASSWD: ALL'
+
+

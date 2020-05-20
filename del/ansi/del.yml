@@ -1,0 +1,8 @@
+---
+- name: deleting a file or directory
+  hosts: dstest
+  tasks:
+   - name: deleting a directory
+     file: 
+       path: /home/ansible
+       state: absent

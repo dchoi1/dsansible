@@ -1,0 +1,9 @@
+---
+- name: user motd role playbook
+  hosts: 172.31.8.51
+  user: ansible
+  become: true
+  vars:
+   system_owner: ds@wudip.com
+  roles: 
+   - motd

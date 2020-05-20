@@ -1,0 +1,17 @@
+---
+- name: print
+  hosts: dstest
+  tasks:
+   - name: adding hostname in etc hosts
+     debug:
+#      msg: '{{ ansible_facts['hostname'] }}'
+#g      msg: '{{ ansible_facts.hostname }}'
+#g      msg: '{{ ansible_hostname }}'
+#      msg: '{{ ansible_facts.ansible_hostname }}'
+      msg: '{{ ansible_facts.memtotal_mb }}'
+      msg: '{{ ansible_memtotal_mb }}'
+
+#      regexp: '^{{ ansible_facts.ansible_default_ipv4.address }}'
+#      line: '{{ ansible_facts.ansible_default_ipv4.address }} {{ ansible_facts.ansible_hostname }}'
+#      line: '{{ ansible_facts.ansible_default_ipv4.address }}'
+
