@@ -1,0 +1,9 @@
+---
+- name: set up interval for sysstat
+  hosts: dstest
+  tasks:
+   - name: set up the interval for sysstat for 1 minute
+     replace:
+      path: /etc/cron.d/sysstat
+      regexp: '(\*/10) (\*) (\*) (\*) (\*) root /usr/lib64/sa/sa1'
+      replace: '* * * * * root /usr/lib64/sa/sa1 1 1'

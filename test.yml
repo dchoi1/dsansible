@@ -1,16 +1,10 @@
 ---
-- name: user add
+- name: set up interval for sysstat
   hosts: dstest
   tasks:
-   - name: adding ansible user
-     yum:
-      name: httpd
-      state: present
-     notify: reboot_host
-
-  handlers:
-   - name: reboot_host
-     command: /sbin/shutdown -r +1
-     async: 1
-     poll: 0
-     ignore_errors: true
+   - name: set up the interval for sysstat for 1 minute
+     replace:
+      path: /root/dsfile
+      regexp: '(\*/10) dosun'
+      replace: 'test'
+      backup: yes

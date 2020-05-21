@@ -12,4 +12,5 @@
      packages: 
      - wget
      - telnet
+     - sysstat
 
