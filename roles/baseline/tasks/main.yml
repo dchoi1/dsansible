@@ -1,5 +1,11 @@
 ---
 # tasks file for baseline
+- name: setup resolv.conf
+  lineinfile:
+   path: /etc/resolv.conf
+   regexp: '^nameserver 10.44.32.12'
+   line: 'nameserver 10.44.32.12'
+
 - name: install packages
   yum:
    name: "{{ packages }}"
@@ -12,11 +18,6 @@
   user:
    name: ansible
    uid: 3001
-- name: setup resolv.conf
-  lineinfile:
-   path: /etc/resolv.conf
-   regexp: '^nameserver 10.44.32.12'
-   line: 'nameserver 10.44.32.12'
 - name: disable selinux
   selinux:
    state: disabled

@@ -1,0 +1,6 @@
+---
+- name: setup network
+  hosts: dstest
+  remote_user: root
+  roles:
+   role: rhel-system-roles.network

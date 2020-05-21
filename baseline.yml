@@ -2,12 +2,11 @@
 - name: setting up the baseline for a new build
   hosts: dstest
   remote_user: root
-#  pre_tasks: 
-#   - name: install libselinux-python
-#     tasks: 
-#      yum:
-#       name: libselinux-python
-#       state: latest
+  pre_tasks:
+   - name: install libselinux-python
+     yum:
+      name: libselinux-python
+      state: latest
   roles:
    - role: baseline
      packages: 
