@@ -9,8 +9,11 @@
       state: latest
   roles:
    - role: baseline
-     packages: 
+     package_names:
      - wget
      - telnet
      - sysstat
+     service_names:
+      - sysstat
+      - nfs
 

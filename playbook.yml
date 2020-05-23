@@ -1,0 +1,47 @@
+---
+- name: guided study
+  hosts: dstest
+  vars:
+   web_pkg: httpd
+   firewall_pkg: firewalld
+   web_service: httpd
+   firewall_service: firewalld
+   python_pkg: python-httplib2
+   rule: http
+  tasks:
+   - name: install web_pkg
+     yum:
+      name: "{{ web_pkg }}"
+      state: latest
+#   - name: httpd is enabled and started
+#     systemd:
+#      name: "{{ web_service }}"
+#      enabled: yes
+#      state: started
+#   - name: firewalld is enabled and started
+#     systemd:
+#      name: "{{ firewall_service }}"
+#      enabled: yes
+#      state: started
+   - name: firewalld and httpd enabled and started
+     systemd:
+      name: "{{ item }}"
+      enabled: yes
+      state: started
+     loop:
+      - "{{ web_service }}"
+      - "{{ firewall_service }}"
+   - name: ensure /var/www/html/index.html exists
+     copy:
+      content: "This is the web server"
+      dest: /var/www/html/index.html
+   - name: open port {{ rule }} on firewalld
+     firewalld:
+      service: "{{ rule }}"
+      permanent: yes
+      immediate: yes
+      state: enabled
+   - name: ensure the web page
+     uri:
+      url: http://172.31.8.51
+      status_code: 200

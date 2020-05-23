@@ -1,10 +1,19 @@
 ---
-- name: set up interval for sysstat
+- name: test
   hosts: dstest
-  tasks:
-   - name: set up the interval for sysstat for 1 minute
-     replace:
-      path: /root/dsfile
-      regexp: '(\*/10) dosun'
-      replace: 'test'
-      backup: yes
+  vars: 
+   data:
+    - user0
+    - user1
+    - user2
+
+
+  tasks: 
+   - name: looping items
+#     shell: "echo This is item # {{ with_sequence }} {{ item }}"
+     shell: "echo This is item {{ item }}"
+     loop: "{{ data }}"
+     register: item_output
+   - name: debugging
+     debug: 
+      msg: "{{ item_output }}"

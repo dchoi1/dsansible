@@ -8,7 +8,7 @@
 
 - name: install packages
   yum:
-   name: "{{ packages }}"
+   name: "{{ package_names }}"
    state: latest
   vars:
    packages:
@@ -55,3 +55,9 @@
    regexp: '(\*/10) (\*) (\*) (\*) (\*) root /usr/lib64/sa/sa1'
    replace: '* * * * * root /usr/lib64/sa/sa1 1 1'
 
+- name: enable and start services
+  systemd:
+   name: "{{ item }}"
+   enabled: yes
+   state: started
+  loop: "{{ service_names }}"
