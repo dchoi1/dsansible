@@ -6,14 +6,22 @@
     - user0
     - user1
     - user2
+   supported_os:
+#    - OracleLinux
+    - RedhatLinux
+   supported_version:
+    - "7.3"
+   db_packages:
+    - mariadb-server
+    - MySQL-python
+   db_service: mysqld.service
 
 
   tasks: 
-   - name: looping items
-#     shell: "echo This is item # {{ with_sequence }} {{ item }}"
-     shell: "echo This is item {{ item }}"
-     loop: "{{ data }}"
-     register: item_output
-   - name: debugging
-     debug: 
-      msg: "{{ item_output }}"
+   - name: test
+     shell: | 
+      LASTONE=$(cat /root/dsfile)
+
+      if [[ $LASTONE == "ds" ]]; then
+       echo this is true
+      fi

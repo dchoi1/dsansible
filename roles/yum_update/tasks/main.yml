@@ -1,0 +1,26 @@
+---
+# tasks file for yum_update
+
+- name: yum update all
+  yum: 
+   name: "*"
+   state: latest
+- name: comparing the installed kernel and current kernel
+  shell: |
+   INSTALLED=$(rpm -q --last kernel-uek | awk '{print $1}' | head -1 | sed 's/kernel-uek-//')
+   CURRENT=$(uname -r)
+   if [[ $INSTALLED == $CURRENT ]]; then
+    $INSTALLED = $OUTPUT
+   else 
+    touch /tmp/dsreboot
+   fi
+- name: Checking if dsreboot file exists
+  stat:
+   path: /tmp/dsreboot
+  register: dsreboot
+
+- name: reboot the system
+  shell: sleep 2 && /sbin/shutdown -r now "Reboot required for updated kernel." && sleep 2
+  async: 20
+  poll: 0
+  when: dsreboot.stat.exists == true

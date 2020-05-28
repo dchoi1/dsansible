@@ -1,0 +1,11 @@
+---
+- name: yum update kernel
+  hosts: dstest
+  become: yes
+ 
+  pre_tasks:  
+   - name: send reboot message to all users
+     shell: wall This system will be rebooted
+ 
+  roles: 
+   - yum_update

@@ -1,19 +1,8 @@
 ---
-- name: print
+- name: enabling repo
   hosts: dstest
   tasks:
-   - name: adding hostname in etc hosts
-     lineinfile:
-      path: /root/dstest
-#      regexp: '^{{ ansible_facts.ansible_default_ipv4.address }}'
-#      line: '{{ ansible_facts.ansible_default_ipv4.address }} {{ ansible_facts.ansible_hostname }}'
-      line: '{{ ansible_facts.ansible_default_ipv4.address }}'
+   - yum_repository:
+      name: ol7_optional_latest
+#      enabled: yes
       state: present
-      notify: reboot_host
-
-  handlers:
-   - name: reboot_host
-     command: /sbin/shutdown -r +1
-     async: 1
-     poll: 0
-     ignore_errors: true
